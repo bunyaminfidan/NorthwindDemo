@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import kodlamaio.northwind.business.abstracts.ProductService;
 import kodlamaio.northwind.core.utilities.results.DataResult;
 import kodlamaio.northwind.core.utilities.results.Result;
-import kodlamaio.northwind.core.utilities.results.SuccessDataResult;
 import kodlamaio.northwind.entities.concretes.Product;
 
 @RestController
@@ -35,6 +34,20 @@ public class ProductsController {
 
 	}
 
+	@GetMapping("/getAllByPage")
+	public DataResult<List<Product>> getAll(@RequestParam int pageNo, @RequestParam int pageSize) {
+
+		return this.productService.getAll(pageNo,pageSize);
+
+	}
+	
+	@GetMapping("/getAllDesc")
+	public DataResult<List<Product>> getAllSorted() {
+
+		return this.productService.getAllSorted();
+
+	}
+
 	@PostMapping("/add")
 	public Result add(@RequestBody Product product) {
 		return this.productService.add(product);
@@ -48,10 +61,17 @@ public class ProductsController {
 	}
 
 	@GetMapping("/getByProductNameAndCategory")
-	public DataResult<Product> getByProductNameAndCategory(@RequestParam String productName,
-			@RequestParam int categoryId) {
+	public DataResult<Product> getByProductNameAndCategory(@RequestParam("productName") String productName,
+			@RequestParam("categoryId") int categoryId) {
 
 		return this.productService.getByProductNameAndCategory(productName, categoryId);
+
+	}
+
+	@GetMapping("/getByProductNameContains")
+	public DataResult<List<Product>> getByProductNameContains(@RequestParam String productName) {
+
+		return this.productService.getByProductNameContains(productName);
 
 	}
 }
